@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String         @id @default(uuid()) @db.Uuid
+  email            String         @unique
+  name             String?
+  lastName         String?
+  username         String         @unique
+  age              DateTime?
+  gender           String?
+  password         String
+  bio              String?
+  image            String?
+  status           Boolean        @default(false)
+  favoritePlatform String[]       @default(["Pc", "Mobile", "Console"])
+  interests        InterestGame[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  requestEmisor    Match[]        @relation("userEmisor")
+  requestRecepetor Match[]        @relation("userReceptor")
+  messages         Message[]
+  conversationsA   Conversation[] @relation("usuarioA")
+  conversacionsB   Conversation[] @relation("usuarioB")
+  schedule         String[]       @default(["mañana", "tarde", "noche"])
+}
+
+model InterestGame {
+  id           String   @id @default(uuid()) @db.Uuid
+  image        String   @default("https://res.cloudinary.com/dppqkypts/image/upload/v1713400787/data_ixiru6.png")
+  nameGame     String?
+  categoryGame String
+  skill        Int?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  User         User?    @relation(fields: [userId], references: [id])
+  userId       String?  @db.Uuid
+}
+
+model Match {
+  id             String    @id @default(uuid()) @db.Uuid
+  initialMessage String?   @default("Hola, ¿quieres jugar?")
+  userEmisorId   String    @db.Uuid
+  userEmisor     User      @relation(fields: [userEmisorId], references: [id], name: "userEmisor")
+  userReceptorId String    @db.Uuid
+  userReceptor   User      @relation(fields: [userReceptorId], references: [id], name: "userReceptor")
+  status         Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  messages       Message[]
+}
+
+model Conversation {
+  id        String   @id @default(uuid()) @db.Uuid
+  usuarioA  User?    @relation(fields: [userAId], references: [id], name: "usuarioA")
+  userAId   String?  @db.Uuid
+  usuarioB  User?    @relation(fields: [userBId], references: [id], name: "usuarioB")
+  userBId   String?  @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Boolean  @default(true)
+}
+
+model Message {
+  id        String   @id @default(uuid()) @db.Uuid
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.Uuid
+  Match     Match?   @relation(fields: [matchId], references: [id])
+  matchId   String?  @db.Uuid
+}

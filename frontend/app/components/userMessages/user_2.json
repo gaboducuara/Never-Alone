@@ -1,0 +1,12 @@
+{
+  "user": {
+    "name": "Wagner",
+    "age": 30,
+    "email": "juan@example.com",
+    "phone": "1234567890",
+    "profile_picture": null,
+    "status": "online",
+    "description": "I'm a software developer who loves coding and exploring new technologies."
+  },
+  "conversations": []
+}

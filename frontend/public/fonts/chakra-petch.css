@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Chakra Petch';
+    src: url('/fonts/ChakraPetch-Regular.ttf') format('truetype');
+}
+
+
+body {
+    font-family: 'Chakra Petch', sans-serif;
+}

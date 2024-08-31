@@ -1,0 +1,12 @@
+.skewed-border {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9f04c;
+  width: 240px;
+  height: 48px;
+  transform: skewX(-0.2rad);
+  cursor: pointer;
+  margin: 0 50%;
+}
